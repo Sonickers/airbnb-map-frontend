@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { withGoogleMap, GoogleMap } from 'react-google-maps'
 import { PlaceMarker } from './PlaceMarker'
 
-const AirbnbMap = withGoogleMap(props => (
+let AirbnbMap = withGoogleMap(props => (
   <GoogleMap
     defaultCenter={props.center}
     defaultZoom={props.zoom}>
