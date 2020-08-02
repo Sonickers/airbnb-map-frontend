@@ -1,46 +1,53 @@
-import React, { Component } from 'react'
-import { Marker } from 'react-google-maps'
-import { PlaceInfoWindow } from './PlaceInfoWindow'
+import React, { Component } from "react";
+import { Marker } from "react-google-maps";
+import { PlaceInfoWindow } from "./PlaceInfoWindow";
 
 export class PlaceMarker extends Component {
   constructor(props) {
-    super(props)
+    super(props);
 
-     this.state = {
-      showTooltip: false
-    }
+    this.state = {
+      showTooltip: false,
+    };
   }
 
   clickTooltip() {
-    this.setState({ showTooltip: !this.state.showTooltip })
+    this.setState({ showTooltip: !this.state.showTooltip });
   }
 
   closeWindow() {
-    this.setState({ showTooltip: false })
+    this.setState({ showTooltip: false });
   }
 
   render() {
-    const {showTooltip} = this.state
-    const {lat, lng, name, price, description, id} = this.props
+    const { showTooltip } = this.state;
+    const { lat, lng, name, price, description, id } = this.props;
 
-    return(
+    return (
       <Marker
         position={{
           lat: parseFloat(lat),
-          lng: parseFloat(lng)
+          lng: parseFloat(lng),
         }}
-        onClick={this.clickTooltip.bind(this)}>
-         key={`marker${id}`}
+        onClick={this.clickTooltip.bind(this)}
+        markerWithLabel={window.MarkerWithLabel}
+        opacity={0}
+        labelClass='map-price-container'
+        labelContent={`<div class="map-price-marker"><span>$${price}</span></div>`}
+        key={`marker${id}`}
+      >
         {showTooltip && (
-          <PlaceInfoWindow key={`info${id}`}
-                           description={description}
-                           name={name}
-                           price={price}
-                           closeWindow={this.closeWindow.bind(this)}/>
+          <PlaceInfoWindow
+            key={`info${id}`}
+            description={description}
+            name={name}
+            price={price}
+            closeWindow={this.closeWindow.bind(this)}
+          />
         )}
       </Marker>
     );
   }
 }
 
-export default PlaceMarker
+export default PlaceMarker;
