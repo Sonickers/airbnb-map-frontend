@@ -13,12 +13,13 @@ const AirbnbMap = withGoogleMap(props => (
     defaultZoom={props.zoom}>
     {
       props.places.length > 0 && props.places.map(place => (
-        <PlaceMarker lat={50.0515918}
-                     lng={19.9357531}
-                     description={'Description'}
-                     name={'Hotel'}
-                     price={'10'}
-                     key={1} />
+        <PlaceMarker key={`place${place.id}`}
+                     id={place.id}
+                     lat={place.latitude}
+                     lng={place.longitude}
+                     description={place.description}
+                     name={place.name}
+                     price={place.price} />
       ))
     }
   </GoogleMap>
@@ -66,9 +67,14 @@ export class Map extends Component {
   }
 
   fetchPlacesFromApi() {
-    const place = <PlaceMarker lat={50.0515918} lng={19.9357531} price={20} name={"Hotel"} description={"Hotel desc"} />
-    this.setState({ places: [place] })
+    this.setState({ places: [] })
+
+    fetch(`/api/places?min_lng=${this.xMapBounds.min}&max_lng=${this.xMapBounds.max}&min_lat=${this.yMapBounds.min}&max_lat=${this.yMapBounds.max}`,
+      { method: 'GET' })
+      .then((response) => response.json())
+      .then((response) => this.setState({ places: response }))
   }
+
 
   getMapBounds() {
     const mapBounds = this.map.getBounds()
